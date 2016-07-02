@@ -13,11 +13,15 @@
 
 Route::auth();
 
+/* GET Requests */
 Route::get('/', 'TextController@example');
+
+Route::get('clients', ['as' => 'clients', 'uses' => 'ClientsController@index']);
+Route::get('clients/add', 'ClientsController@add');
+Route::get('clients/edit/{id}', 'ClientsController@edit');
+Route::get('clients/delete/{id}', 'ClientsController@delete');
+
+/* Post Requests */
 Route::post('/', 'TextController@example');
-
-Route::get('/home', 'TextController@example');
-Route::post('/home', 'TextController@example');
-
-Route::get('/text/example', 'TextController@example');
-Route::post('/text/example', 'TextController@example');
+Route::post('clients/create', 'ClientsController@create');
+Route::post('clients/update/{id}', 'ClientsController@update');
