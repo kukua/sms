@@ -24,38 +24,46 @@ class Twilio {
 	public $tempMax;
 	public $rainMM;
 	public $rainChance;
+	public $content;
 
 	protected $_sId;
 	protected $_token;
 	protected $_number;
 
 	public function __construct() {
-		$this->_sId    = env(TWILIO_SID, '');
-		$this->_token  = env(TWILIO_TOKEN, '');
-		$this->_number = env(TWILIO_NUMBER, '');
+		$this->_sId    = env('TWILIO_SID', '');
+		$this->_token  = env('TWILIO_TOKEN', '');
+		$this->_number = env('TWILIO_NUMBER', '');
 	}
 
 	public function smsService() {
-		$result = [];
-
 		$clients = Client::all();
 		foreach($clients as $client) {
-			$text = $this->getTextFormat($client->type);
-			if ($text === null || !$client->phone) {
-				continue;
-			}
-
-			$temp = (new Foreca())->getTemp($client->lat, $client->lng);
-			$rain = (new Foreca())->getRain($client->lat, $client->lng);
-
-			$this->date    = \DateTime::createFromFormat('Y-m-d', $rain['dt'], new \DateTimeZone("Europe/Amsterdam"));
-			$this->city    = $client->city;
-			$this->tempMin = (float) $temp['tn'];
-			$this->tempMax = (float) $temp['tx'];
-			$this->rainMM  = number_format((float) $rain['pr'], 1);
-
-			$this->_send($client->phone, $text);
+			$object = $this->get($client);
+			$object->_send($client->phone);
 		}
+	}
+
+	public function get($client) {
+		if (!$client->phone) {
+			return false;
+		}
+
+		$temp = (new Foreca())->getTemp($client->lat, $client->lng);
+		$rain = (new Foreca())->getRain($client->lat, $client->lng);
+
+		$this->date    = \DateTime::createFromFormat('Y-m-d', $temp['dt'], new \DateTimeZone("Europe/Amsterdam"));
+		$this->city    = $client->city;
+		$this->tempMin = (float) $temp['tn'];
+		$this->tempMax = (float) $temp['tx'];
+		$this->rainMM  = number_format((float) $rain['pr'], 1);
+
+		$this->content = $this->getTextFormat($client->type);
+		if ($this->content === null) {
+			return false;
+		}
+
+		return $this;
 	}
 
 	public function getTextFormat($type) {
@@ -84,14 +92,14 @@ class Twilio {
 		return $str;
 	}
 
-	protected function _send($to, $text = null) {
-		$twilio  = new Services_Twilio($this->_sId, $this->_token);
+	protected function _send($to) {
+		$twilio  = new \Services_Twilio($this->_sId, $this->_token);
 
-		if (!is_null($text)) {
+		if (!is_null($this->content)) {
 			$twilio->account->messages->sendMessage(
 				$this->_number,
 				$to,
-				$text
+				$this->content
 			);
 		}
 	}

@@ -19,7 +19,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">Text message example</div>
 					<div class="panel-body">
-						{{ ucfirst($city) }} {{ $datetime->format("d-m-Y H:i") }}<br />
+						{{ ucfirst($city) }} {{ $datetime }}<br />
 						Temperature min: {{ $tempMin }} ℃<br />
 						Temperature max: {{ $tempMax }} ℃<br />
 						Expected rainfall: {{ $rain }} mm

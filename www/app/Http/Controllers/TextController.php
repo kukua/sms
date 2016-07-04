@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use Geocoder;
 use \App\Library\Foreca;
+use \App\Library\Twilio;
+use \App\Client;
 
 class TextController extends Controller {
 
@@ -15,36 +17,30 @@ class TextController extends Controller {
 	}
 
 	public function example(Request $request) {
-		$city = $request->input('city', 'Amsterdam, netherlands');
+		$city = $request->input('city', 'Amsterdam, NL');
 		$param = ["address" => $city];
 		$api = json_decode(Geocoder::geocode('json', $param));
 
-		$data = [
-			'datetime'=> new \DateTime(),
-			'city' => 'Undefined',
-			'tempMin' => '-',
-			'tempMax' => '-',
-			'rain' => '-'
-		];
+		$client = Client::find(1);
+		$client->city = $city;
 
-		if (isset($api->results[0])) {
-			$location = $api->results[0]->geometry->location;
-			$fcTemp = (new Foreca())->getTemp($location->lat, $location->lng);
-			$fcRain = (new Foreca())->getRain($location->lat, $location->lng);
-
-			$datetime = \DateTime::createFromFormat("Y-m-d", $fcTemp['dt'], new \DateTimeZone("Europe/Amsterdam"));
-			$tempMin = (float) $fcTemp['tn'];
-			$tempMax = (float) $fcTemp['tx'];
-			$rain = number_format((float) $fcRain['pr'], 1);
-
-			$data = [
-				'datetime'=> $datetime,
-				'city' => $city,
-				'tempMin' => $tempMin,
-				'tempMax' => $tempMax,
-				'rain' => $rain
-			];
+		if (!count($api->results)) {
+			$backupParam = ["address" => "Amsterdam, NL"];
+			$api = json_decode(Geocoder::geocode('json', $backupParam));
+			$client->city = "Amsterdam, NL";
 		}
+
+		$client->lat = $api->results[0]->geometry->location->lat;
+		$client->lng = $api->results[0]->geometry->location->lng;
+
+		$twilio = (new Twilio())->get($client);
+		$data = [
+			'datetime'=> $twilio->date->format('d-m-Y'),
+			'city' => $twilio->city,
+			'tempMin' => $twilio->tempMin,
+			'tempMax' => $twilio->tempMax,
+			'rain' => $twilio->rainMM
+		];
 		return view('text/view', $data);
 	}
 }
