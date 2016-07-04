@@ -35,7 +35,7 @@ class Foreca {
 	 * @since  21-06-2016
 	 */
 	public function getTemp($lat, $lng) {
-		$call = $this->base . '/showdata.php?ftimes=48/24h&format=' . $this->format . '&lon=' . $lng . '&lat=' . $lat . '&tempunit=C&windunit=MS&tz=Europe/Amsterdam';
+		$call = $this->base . '/showdata.php?ftimes=24/24h&format=' . $this->format . '&lon=' . $lng . '&lat=' . $lat . '&tempunit=C&windunit=MS&tz=Europe/Amsterdam';
 		return $this->_parse($call);
 	}
 
@@ -70,6 +70,6 @@ class Foreca {
 		if (!$response) {
 			return;
 		}
-		return $response->loc->fc[1];
+		return $response->loc->fc[0];
 	}
 }

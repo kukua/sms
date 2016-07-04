@@ -33,13 +33,12 @@ class TextController extends Controller {
 		$client->lat = $api->results[0]->geometry->location->lat;
 		$client->lng = $api->results[0]->geometry->location->lng;
 
-		$twilio = (new Twilio())->get($client);
+		$text1 = (new Twilio())->get($client, 1);
+		$text2 = (new Twilio())->get($client, 2);
+
 		$data = [
-			'datetime'=> $twilio->date->format('d-m-Y'),
-			'city' => $twilio->city,
-			'tempMin' => $twilio->tempMin,
-			'tempMax' => $twilio->tempMax,
-			'rain' => $twilio->rainMM
+			'one'=> $text1->content,
+			'two' => $text2->content
 		];
 		return view('text/view', $data);
 	}

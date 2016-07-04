@@ -15,14 +15,19 @@
 	<div style="margin: 20px 0"></div>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-10 col-md-offset-1">
+			<div class="col-md-5 col-md-offset-1">
 				<div class="panel panel-default">
-					<div class="panel-heading">Text message example</div>
+					<div class="panel-heading">Text message 1</div>
 					<div class="panel-body">
-						{{ ucfirst($city) }} {{ $datetime }}<br />
-						Temperature min: {{ $tempMin }} ℃<br />
-						Temperature max: {{ $tempMax }} ℃<br />
-						Expected rainfall: {{ $rain }} mm
+						<?= nl2br($one) ?>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-5">
+				<div class="panel panel-default">
+					<div class="panel-heading">Text message 2</div>
+					<div class="panel-body">
+						<?= nl2br($two); ?>
 					</div>
 				</div>
 			</div>

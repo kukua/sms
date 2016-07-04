@@ -44,7 +44,7 @@ class Twilio {
 		}
 	}
 
-	public function get($client) {
+	public function get($client, $type = null) {
 		if (!$client->phone) {
 			return false;
 		}
@@ -58,7 +58,12 @@ class Twilio {
 		$this->tempMax = (float) $temp['tx'];
 		$this->rainMM  = number_format((float) $rain['pr'], 1);
 
-		$this->content = $this->getTextFormat($client->type);
+		if ($type !== null) {
+			$this->content = $this->getTextFormat($type);
+		} else {
+			$this->content = $this->getTextFormat($client->type);
+		}
+
 		if ($this->content === null) {
 			return false;
 		}

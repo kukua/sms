@@ -12,8 +12,9 @@ class Kernel extends ConsoleKernel {
 
     protected function schedule(Schedule $schedule) {
 		$schedule->call(function() {
-			$service = new Twilio();
-			$service->smsService();
-		})->daily();
+
+			(new Twilio())->smsService();
+
+		})->dailyAt('04:00');
     }
 }
