@@ -29,8 +29,8 @@
 								<td>{{ $client->type }}</td>
 								<td>
 									<div class="pull-right">
-										<a href="/clients/edit/{{ $client->id }}/"><i class="glyphicon glyphicon-pencil"></i>
-										<a href="/clients/delete/{{ $client->id }}/"><i class="glyphicon glyphicon-trash"></i>
+										<a href="/clients/edit/{{ $client->id }}/"><i class="fa fa-btn fa-edit"></i></a>
+										<a href="/clients/delete/{{ $client->id }}/"><i class="fa fa-btn fa-trash"></i></a>
 									</div>
 								</td>
 							</tr>
