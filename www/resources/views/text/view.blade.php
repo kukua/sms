@@ -6,8 +6,13 @@
 			<div class="col-xs-4 col-xs-offset-4">
 				<form method="post">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-					<input type="text" name="city" placeholder="Arusha, Tanzania" class="form-control">
-					<center><button type="submit" class="btn btn-primary">Gimme info</button></center>
+
+					<div class="input-group">
+						<input type="text" name="city" placeholder="Arusha, Tanzania" class="form-control">
+						<span class="input-group-btn">
+							<button type="submit" class="btn btn-primary">Display output</button>
+						</span>
+					</div>
 				</form>
 			</div>
 		</div>

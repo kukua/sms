@@ -25,7 +25,9 @@
 								<td>{{ $user->email }}</td>
 								<td>
 									<div class="pull-right">
-										<a href="/users/delete/{{ $user->id }}/"><i class="fa fa-btn fa-trash"></i></a>
+										@if (\Auth::user()->id != $user->id)
+											<a href="/users/delete/{{ $user->id }}/" class="js-confirm" data-confirm="Are you sure you want to delete this user?"><i class="fa fa-btn fa-trash"></i></a>
+										@endif
 									</div>
 								</td>
 							</tr>

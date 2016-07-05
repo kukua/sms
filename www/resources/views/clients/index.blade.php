@@ -30,7 +30,8 @@
 								<td>
 									<div class="pull-right">
 										<a href="/clients/edit/{{ $client->id }}/"><i class="fa fa-btn fa-edit"></i></a>
-										<a href="/clients/delete/{{ $client->id }}/"><i class="fa fa-btn fa-trash"></i></a>
+										&nbsp;&nbsp;
+										<a href="/clients/delete/{{ $client->id }}/" class="js-confirm" data-confirm="Are you sure you want to remove this client?"><i class="fa fa-btn fa-trash"></i></a>
 									</div>
 								</td>
 							</tr>

@@ -24,7 +24,10 @@ class UsersController extends Controller
 	}
 
 	public function delete($id) {
-		$user = User::destroy($id);
+		if (\Auth::user()->id != $id) {
+			$user = User::destroy($id);
+		}
+
 		return redirect()->route("users");
 	}
 
