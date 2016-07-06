@@ -42,34 +42,42 @@ class Twilio {
 
 		$locations = [
 			[
+				'city' => 'Beoboken',
 				'lat' => '10.88515',
 				'lng' => '-0.75446',
 			],
 			[
+				'city' => 'Dabogshei'
 				'lat' => '9.268018',
 				'lng' => '-0.871342',
 			],
 			[
+				'city' => 'Takpili',
 				'lat' => '9.300931',
 				'lng' => '-0.5784113',
 			],
 			[
+				'city' => 'Gowrie',
 				'lat' => '10.84835',
 				'lng' => '-0.85098',
 			],
 			[
+				'city' => 'Tonogugro',
 				'lat' => '10.88339',
 				'lng' => '-0.726315',
 			],
 			[
+				'city' => 'Toroyili',
 				'lat' => '9.33635',
 				'lng' => '-1.071362',
 			],
 			[
+				'city' => 'Zoopele',
 				'lat' => '11.0172',
 				'lng' => '-2.805917',
 			],
 			[
+				'city' => 'Bekyiinteng',
 				'lat' => '10.979426',
 				'lng' => '-2.79559',
 			]
@@ -82,6 +90,7 @@ class Twilio {
 
 			$object = new Twilio();
 			$object->date    = \DateTime::createFromFormat('Y-m-d', $temp['dt'], new \DateTimeZone("Europe/Amsterdam"));
+			$object->city	 = $geo['city'];
 			$object->tempMin = (float) $temp['tn'];
 			$object->tempMax = (float) $temp['tx'];
 			$object->rainMM  = number_format((float) $rain['pr'], 1);
@@ -154,10 +163,10 @@ class Twilio {
 	}
 
 	public function textFormatSpecial() {
-		$str  = $this->date->format('d-m-Y') . "\r\n";
+		$str  = $this->city . ", " . $this->date->format('d-m-Y') . "\r\n";
 		$str .= "Temp min: " . $this->tempMin . "℃ \r\n";
 		$str .= "Temp max: " . $this->tempMax . "℃" . "\r\n";
-		$str .= "Rainfall: " . $this->rainMM;
+		$str .= "Rainfall: " . $this->rainMM . 'mm';
 		return $str;
 	}
 
