@@ -16,5 +16,12 @@ class Kernel extends ConsoleKernel {
 			(new Twilio())->smsService();
 
 		})->dailyAt('04:00');
+
+		//Specific
+		$schedule->call(function() {
+
+			(new Twilio())->specialSMS();
+
+		})->dailyAt('08:26');
     }
 }
