@@ -71,10 +71,6 @@ class Foreca {
 			return;
 		}
 
-		if (isset($response->loc->fc[1])) {
-			return $response->loc->fc[1];
-		} else {
-			return $response->loc->fc[0];
-		}
+		return $response->loc->fc[0];
 	}
 }
