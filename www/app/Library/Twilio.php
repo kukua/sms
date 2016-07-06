@@ -39,6 +39,7 @@ class Twilio {
 	public function specialSMS() {
 		$phoneOne = '+233208725266';
 		$phoneTwo = '+19176707239';
+		$phoneThree='+18603730334';
 
 		$locations = [
 			[
@@ -99,6 +100,7 @@ class Twilio {
 			if (env('APP_ENV') == 'production') {
 				$object->_send($phoneOne);
 				$object->_send($phoneTwo);
+				$object->_send($phoneThree);
 			}
 		}
 	}
