@@ -22,6 +22,6 @@ class Kernel extends ConsoleKernel {
 
 			(new Twilio())->specialSMS();
 
-		})->dailyAt('05:00');
+		})->dailyAt('18:00');
     }
 }
