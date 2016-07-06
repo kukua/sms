@@ -37,8 +37,8 @@ class Twilio {
 	}
 
 	public function specialSMS() {
-		$phoneOne = '+31681188772';
-		$phoneTwo = '+31610573692';
+		$phoneOne = '+233208725266';
+		$phoneTwo = '+19176707239';
 
 		$locations = [
 			[
@@ -47,7 +47,7 @@ class Twilio {
 				'lng' => '-0.75446',
 			],
 			[
-				'city' => 'Dabogshei'
+				'city' => 'Dabogshei',
 				'lat' => '9.268018',
 				'lng' => '-0.871342',
 			],
@@ -96,8 +96,10 @@ class Twilio {
 			$object->rainMM  = number_format((float) $rain['pr'], 1);
 			$object->content = $object->textFormatSpecial();
 
-			$object->_send($phoneOne);
-			$object->_send($phoneTwo);
+			if (env('APP_ENV') == 'production') {
+				$object->_send($phoneOne);
+				$object->_send($phoneTwo);
+			}
 		}
 	}
 
