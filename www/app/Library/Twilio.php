@@ -36,7 +36,7 @@ class Twilio {
 		$this->_number = env('TWILIO_NUMBER', '');
 	}
 
-	public function specialSMS() {
+	public function worldCovrSMS() {
 		$phoneOne = '+233208725266';
 		$phoneTwo = '+19176707239';
 		$phoneThree='+18603730334';
@@ -86,20 +86,29 @@ class Twilio {
 
 
 		foreach($locations as $geo) {
-			$temp = (new Foreca())->getTemp($geo['lat'], $geo['lng']);
-			$rain = (new Foreca())->getRain($geo['lat'], $geo['lng']);
+			$rain = (new Foreca())->worldCovr($geo['lat'], $geo['lng']);
 
 			$object = new Twilio();
-			$object->date    = \DateTime::createFromFormat('Y-m-d', $temp['dt'], new \DateTimeZone("Europe/Amsterdam"));
 			$object->city	 = $geo['city'];
-			$object->tempMin = (float) $temp['tn'];
-			$object->tempMax = (float) $temp['tx'];
-			$object->rainMM  = number_format((float) $rain['pr'], 1);
-			$object->content = $object->textFormatSpecial();
+			$object->content = $object->city . "\n";
+
+			$i = 0;
+			foreach($rain->fc as $fc) {
+				if ($i %4 == 0) {
+					$object->content .= "\n" . $this->dateToWeekday((string) $fc['dt']) . "\n";
+				}
+				$object->content .= $this->dateToDayPart((string) $fc['dt']) . " ";
+				$object->content .= $this->rainChanceToText((string) $fc['pp']) . "\n";
+				$i++;
+			}
 
 			if (env('APP_ENV') == 'production') {
 				$object->_send($phoneOne);
+
+				sleep(1);
 				$object->_send($phoneTwo);
+
+				sleep(1);
 				$object->_send($phoneThree);
 			}
 		}
@@ -107,9 +116,16 @@ class Twilio {
 
 	public function smsService() {
 		$clients = Client::all();
+		$i = 0;
 		foreach($clients as $client) {
 			$object = $this->get($client);
 			$object->_send($client->phone);
+
+			//Set timeout for API calls (max 10/s)
+			$i ++;
+			if ($i %9 == 0) {
+				sleep(1);
+			}
 		}
 	}
 
@@ -166,14 +182,6 @@ class Twilio {
 		return $str;
 	}
 
-	public function textFormatSpecial() {
-		$str  = $this->city . ", " . $this->date->format('d-m-Y') . "\r\n";
-		$str .= "Temp min: " . $this->tempMin . "℃ \r\n";
-		$str .= "Temp max: " . $this->tempMax . "℃" . "\r\n";
-		$str .= "Rainfall: " . $this->rainMM . 'mm';
-		return $str;
-	}
-
 	public function _send($to) {
 		$twilio  = new \Services_Twilio($this->_sId, $this->_token);
 
@@ -184,5 +192,42 @@ class Twilio {
 				$this->content
 			);
 		}
+	}
+
+	public function rainChanceToText($value) {
+		if ($value <= 10) {
+			return "No rain";
+		} elseif ($value <= 30) {
+			return "Minimal chance of rain";
+		} elseif ($value <= 50) {
+			return "Little chance of rain";
+		} elseif ($value <= 69) {
+			return "Likely to rain";
+		} else {
+			return "It will rain";
+		}
+	}
+
+	public function dateToDayPart($date) {
+		$dateTime = \DateTime::createFromFormat("Y-m-d H:i", $date);
+		$convert = $dateTime->format('H');
+
+		if ($convert >= 6 && $convert < 12 ) {
+			return 'Morning';
+		}
+		if ($convert >= 12 && $convert < 17) {
+			return 'Noon';
+		}
+		if ($convert >= 17 && $convert < 23) {
+			return 'Evening';
+		}
+		if ($convert >= 0 && $convert < 6) {
+			return 'Night';
+		}
+	}
+
+	public function dateToWeekday($date) {
+		$dateTime = \DateTime::createFromFormat("Y-m-d H:i", $date);
+		return $dateTime->format("l");
 	}
 }
