@@ -54,21 +54,23 @@ class ClientsController extends Controller
 			throw new Exception("No results for this city");
 		}
 
-		$client->name  = $request->name;
-		$client->type  = $request->type;
-		$client->phone = $request->phone;
-		$client->city  = $request->city;
-		$client->lat   = $googleResults->lat;
-		$client->lng   = $googleResults->lng;
+		$client->name	= $request->name;
+		$client->type	= $request->type;
+		$client->phone	= $request->phone;
+		$client->from	= $request->from;
+		$client->city	= $request->city;
+		$client->lat	= $googleResults->lat;
+		$client->lng	= $googleResults->lng;
 
 		$client->save();
 	}
 
 	protected function _validate($request, $id) {
 		$this->validate($request, [
-			'name'  => 'required|max:255',
-			'phone' => 'required|unique:clients,phone,' . $id,
-			'city'  => 'required|max:255'
+			'name'	=> 'required|max:255',
+			'phone'	=> 'required|unique:clients,phone,' . $id,
+			'from'	=> 'required',
+			'city'	=> 'required|max:255'
 		]);
 	}
 

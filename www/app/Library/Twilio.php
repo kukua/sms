@@ -23,12 +23,10 @@ class Twilio {
 
 	protected $_sId;
 	protected $_token;
-	protected $_number;
 
 	public function __construct() {
 		$this->_sId    = env('TWILIO_SID', '');
 		$this->_token  = env('TWILIO_TOKEN', '');
-		$this->_number = env('TWILIO_NUMBER', '');
 	}
 
 	/**
@@ -45,7 +43,7 @@ class Twilio {
 		$clients = Client::all();
 		foreach($clients as $client) {
 			$object = $this->get($client);
-			$object->_send($client->phone);
+			$object->_send($client->phone, $client->from);
 
 			//Set timeout for API calls
 			sleep(1);
@@ -154,7 +152,7 @@ class Twilio {
 	 * @param  string $to phone number
 	 * @return void
 	 */
-	public function _send($to) {
+	public function _send($from, $to) {
 		$twilio  = new \Services_Twilio($this->_sId, $this->_token);
 
 		if (!is_null($this->content)) {
@@ -296,13 +294,13 @@ class Twilio {
 			}
 
 			if (env('APP_ENV') == 'production') {
-				$object->_send($phoneOne);
+				$object->_send($phoneOne, "+447400200078");
 
 				sleep(1);
-				$object->_send($phoneTwo);
+				$object->_send($phoneTwo, "+447400200078");
 
 				sleep(1);
-				$object->_send($phoneThree);
+				$object->_send($phoneThree, "+447400200078");
 			}
 		}
 	}

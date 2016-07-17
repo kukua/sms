@@ -4,7 +4,7 @@ laravel:
         - ./www/:/www
     links:
         - mariadb
-    restart: always
+    #restart: always
 nginx:
     image: nginx:1.10-alpine
     ports:
@@ -18,7 +18,7 @@ nginx:
         - laravel
     links:
         - laravel
-    restart: always
+    #restart: always
 mariadb:
     image: mariadb:10.1
     env_file: ./www/.env
@@ -27,4 +27,4 @@ mariadb:
         MYSQL_HOST:
     ports:
         - "3306:3306"
-    restart: always
+    #restart: always

@@ -9,13 +9,15 @@
 		</div>
 
 		<div class="row">
-			<div class="col-sm-8 col-xs-offset-2">
+			<div class="col-sm-12">
 				<table class="table table-striped">
 					<thead>
 						<tr>
+							<td>#</td>
 							<td>Full name</td>
 							<td>City</td>
 							<td>Phone number</td>
+							<td>Twilio number</td>
 							<td>Type</td>
 							<td></td>
 						</tr>
@@ -23,9 +25,11 @@
 					<tbody>
 						@foreach ($clients as $client)
 							<tr>
+								<td>{{ $client->id }}</td>
 								<td>{{ $client->name }}</td>
 								<td>{{ $client->city }}</td>
 								<td>{{ $client->phone }}</td>
+								<td>{{ $client->from }}</td>
 								<td>{{ $client->type }}</td>
 								<td>
 									<div class="pull-right">

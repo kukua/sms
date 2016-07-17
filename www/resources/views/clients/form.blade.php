@@ -20,6 +20,13 @@
 </div>
 
 <div class="form-group">
+	<label for="from" class="control-label col-sm-4">From (Twilio nr) *</label>
+	<div class="col-sm-8">
+		<input type="text" id="from" class="form-control" name="from" value="{{ $client->from }}">
+	</div>
+</div>
+
+<div class="form-group">
 	<div class="col-sm-8 col-sm-offset-4">
 		<div class="radio">
 			<label>
