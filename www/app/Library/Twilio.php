@@ -43,7 +43,7 @@ class Twilio {
 		$clients = Client::all();
 		foreach($clients as $client) {
 			$object = $this->get($client);
-			$object->_send($client->phone, $client->from);
+			$object->_send($client->from, $client->phone);
 
 			//Set timeout for API calls
 			sleep(1);
@@ -63,7 +63,12 @@ class Twilio {
 			return false;
 		}
 
-		$foreca = (new Foreca())->getForecast($client->lat, $client->lng);
+		if ($type == 3) {
+			$foreca = (new Foreca())->get24hForecast($client->lat, $client->lng);
+		} else {
+			$foreca = (new Foreca())->get48hForecast($client->lat, $client->lng);
+		}
+
 		foreach($foreca->fc as $fc) {
 			$fcAsArray[] = $fc;
 		}
@@ -141,8 +146,22 @@ class Twilio {
 	 * @access public
 	 * @return string $str
 	 */
-	public function textFormat3() {
-		return "Not yet implemented";
+	public function textFormat3()
+	{
+		$str = "Habiri. Hali ya hewa ya ";
+		$i = 0;
+		foreach($this->forecasts as $forecast) {
+			if ($i %4 == 0) {
+				$str .= Swahili::day($this->dateToWeekday((string) $forecast["dt"])) . ": ";
+			}
+
+			$i++;
+		}
+		$str .= Swahili::dayTemp((string) $this->forecasts[0]["t"]) . ". ";
+		$str .= Swahili::nightTemp((string) $this->forecasts[5]["t"]) . ". ";
+		$str .= Swahili::rainChance((string) $this->forecasts[0]["pp"]) . ". ";
+		$str .= Swahili::wind((string) $this->forecasts[0]["ws"]) . ". ";
+		return $str;
 	}
 
 	/**
@@ -157,7 +176,7 @@ class Twilio {
 
 		if (!is_null($this->content)) {
 			$twilio->account->messages->sendMessage(
-				$this->_number,
+				$from,
 				$to,
 				$this->content
 			);
@@ -294,13 +313,13 @@ class Twilio {
 			}
 
 			if (env('APP_ENV') == 'production') {
-				$object->_send($phoneOne, "+447400200078");
+				$object->_send("+447400200078", $phoneOne);
 
 				sleep(1);
-				$object->_send($phoneTwo, "+447400200078");
+				$object->_send("+447400200078", $phoneTwo);
 
 				sleep(1);
-				$object->_send($phoneThree, "+447400200078");
+				$object->_send("+447400200078", $phoneThree);
 			}
 		}
 	}
