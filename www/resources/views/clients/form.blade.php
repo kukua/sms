@@ -38,6 +38,11 @@
 				<input type="radio" name="type" value="2"> SMS Type 2
 			</label>
 		</div>
+		<div class="radio">
+			<label>
+				<input type="radio" name="type" value="3"> SMS Type 3
+			</label>
+		</div>
 	</div>
 </div>
 
