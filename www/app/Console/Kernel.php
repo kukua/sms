@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel {
 
 		//Every 15 minutes
 		$schedule->call(function() {
-			//(new Twilio())->smsService();
+			(new Twilio())->smsService();
 		})->cron('*/15 * * * *');
 
 		//Specific
