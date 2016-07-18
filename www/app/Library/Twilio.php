@@ -151,7 +151,7 @@ class Twilio {
 		$str = "Habiri. Hali ya hewa ya ";
 		$i = 0;
 		foreach($this->forecasts as $forecast) {
-			if ($i %4 == 0) {
+			if ($i == 0) {
 				$str .= Swahili::day($this->dateToWeekday((string) $forecast["dt"])) . ": ";
 			}
 
@@ -161,6 +161,7 @@ class Twilio {
 		$str .= Swahili::nightTemp((string) $this->forecasts[5]["t"]) . ". ";
 		$str .= Swahili::rainChance((string) $this->forecasts[0]["pp"]) . ". ";
 		$str .= Swahili::wind((string) $this->forecasts[0]["ws"]) . ". ";
+		$str .= "Siku njema, Kukua";
 		return $str;
 	}
 
