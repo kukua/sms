@@ -10,6 +10,7 @@
 namespace App\Library;
 
 use App\Client;
+use DateTime;
 
 /**
  * @package App
@@ -40,13 +41,16 @@ class Twilio {
 	 * @return void
 	 */
 	public function smsService() {
-		$clients = Client::all();
-		foreach($clients as $client) {
-			$object = $this->get($client);
-			$object->_send($client->from, $client->phone);
-
-			//Set timeout for API calls
-			sleep(1);
+		//Create a date before cronjob has served today
+		$date = (new DateTime('now'))->setTime('08', '00')->format("Y-m-d H:i:s");
+		$clients = Client::getSendBatch($date);
+		if (count($clients)) {
+			foreach($clients as $client) {
+				$object = $this->get($client);
+				$object->_send($client->from, $client->phone);
+				$client->send_at = (new DateTime())->setTime('09', '00', '00')->format("Y-m-d H:i:s");
+				$client->save();
+			}
 		}
 	}
 

@@ -10,18 +10,16 @@ class Kernel extends ConsoleKernel {
 
 	protected $commands = [];
 
-    protected function schedule(Schedule $schedule) {
+	protected function schedule(Schedule $schedule) {
+
+		//Every 15 minutes
 		$schedule->call(function() {
-
-			(new Twilio())->smsService();
-
-		})->dailyAt('04:00');
+			//(new Twilio())->smsService();
+		})->cron('*/15 * * * *');
 
 		//Specific
 		$schedule->call(function() {
-
 			(new Twilio())->worldCovrSMS();
-
 		})->dailyAt('18:00');
     }
 }
