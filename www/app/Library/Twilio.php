@@ -44,6 +44,8 @@ class Twilio {
 		//Create a date before cronjob has served today
 		$date = (new DateTime('now'))->setTime('08', '00');
 		$clients = Client::getSendBatch($date);
+		var_dump('clients', $clients);
+
 		if (count($clients)) {
 			foreach($clients as $client) {
 				$object = $this->get($client);
@@ -177,6 +179,8 @@ class Twilio {
 	 * @return void
 	 */
 	public function _send($from, $to) {
+		var_dump('_send', $from, $to, $this->content);
+
 		$twilio  = new \Services_Twilio($this->_sId, $this->_token);
 
 		if (!is_null($this->content)) {
