@@ -42,7 +42,7 @@ class Twilio {
 	 */
 	public function smsService() {
 		//Create a date before cronjob has served today
-		$date = (new DateTime('now'))->setTime('08', '00')->format("Y-m-d H:i:s");
+		$date = (new DateTime('now'))->setTime('08', '00');
 		$clients = Client::getSendBatch($date);
 		if (count($clients)) {
 			foreach($clients as $client) {
@@ -77,7 +77,7 @@ class Twilio {
 			$fcAsArray[] = $fc;
 		}
 		$this->forecasts = $fcAsArray;
-		$this->client    = $client;
+		$this->client	 = $client;
 
 		$type = ($type !== null) ? $type : $this->client->type;
 		$this->content = $this->getTextFormat($type);
