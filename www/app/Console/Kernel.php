@@ -22,10 +22,5 @@ class Kernel extends ConsoleKernel {
 				FILE_APPEND
 			);
 		})->cron('*/15 * * * *');
-
-		//Specific
-		$schedule->call(function() {
-			(new Twilio())->worldCovrSMS();
-		})->dailyAt('18:00');
     }
 }
