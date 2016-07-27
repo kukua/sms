@@ -153,7 +153,7 @@ class Twilio {
 	 */
 	public function textFormat3()
 	{
-		$str = "Habiri. Hali ya hewa ya ";
+		$str = "Habari. Hali ya hewa ya ";
 		$i = 0;
 		foreach($this->forecasts as $forecast) {
 			if ($i == 0) {
