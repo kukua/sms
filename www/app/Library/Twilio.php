@@ -47,6 +47,10 @@ class Twilio {
 
 		if (count($clients)) {
 			foreach($clients as $client) {
+				if (!$client->phone) {
+					continue;
+				}
+
 				$object = $this->get($client);
 				$object->_send($client->from, $client->phone);
 				$client->send_at = (new DateTime())->setTime('09', '00', '00')->format("Y-m-d H:i:s");
