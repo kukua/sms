@@ -14,6 +14,7 @@ class Client extends Model
 
 		if ($now >= $go && $now <= $date) {
 			return Client::where('send_at', '<=', $date->format('Y-m-d H:i:s'))
+				->where('phone', "!=", "")
 				->limit(25)
 				->get();
 		}
