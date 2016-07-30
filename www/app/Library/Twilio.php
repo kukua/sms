@@ -47,7 +47,7 @@ class Twilio {
 
 		if (count($clients)) {
 			foreach($clients as $client) {
-				if (!$client->phone) {
+				if ($client->phone == "") {
 					continue;
 				}
 
@@ -55,6 +55,7 @@ class Twilio {
 				$object->_send($client->from, $client->phone);
 				$client->send_at = (new DateTime())->setTime('09', '00', '00')->format("Y-m-d H:i:s");
 				$client->save();
+				sleep(1);
 			}
 		}
 	}
@@ -185,11 +186,15 @@ class Twilio {
 		$twilio  = new \Services_Twilio($this->_sId, $this->_token);
 
 		if (!is_null($this->content)) {
-			$twilio->account->messages->sendMessage(
-				$from,
-				$to,
-				$this->content
-			);
+			try {
+				$twilio->account->messages->sendMessage(
+					$from,
+					$to,
+					$this->content
+				);
+			} catch (Exception $e) {
+				//ignore
+			}
 		}
 	}
 
