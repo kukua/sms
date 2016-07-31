@@ -74,4 +74,12 @@ class Swahili {
 		}
 		return '';
 	}
+
+	public static function header() {
+		return "Habari. Hali ya hewa ya ";
+	}
+
+	public static function footer() {
+		return "Siku njema, Kukua";
+	}
 }

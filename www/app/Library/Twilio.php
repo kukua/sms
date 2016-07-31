@@ -158,7 +158,7 @@ class Twilio {
 	 */
 	public function textFormat3()
 	{
-		$str = "Habari. Hali ya hewa ya ";
+		$str = Swahili::header();
 		$i = 0;
 		foreach($this->forecasts as $forecast) {
 			if ($i == 0) {
@@ -171,7 +171,7 @@ class Twilio {
 		$str .= Swahili::nightTemp((string) $this->forecasts[5]["t"]) . ". ";
 		$str .= Swahili::rainChance((string) $this->forecasts[0]["pp"]) . ". ";
 		$str .= Swahili::wind((string) $this->forecasts[0]["ws"]) . ". ";
-		$str .= "Siku njema, Kukua";
+		$str .= Swahili::footer();
 		return $str;
 	}
 
