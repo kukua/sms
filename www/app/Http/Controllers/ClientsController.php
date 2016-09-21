@@ -8,6 +8,8 @@ use Geocoder;
 use App\Http\Requests;
 use App\Client;
 
+use App\Content;
+
 class ClientsController extends Controller
 {
 	public function __construct() {
@@ -21,12 +23,26 @@ class ClientsController extends Controller
 
 	public function add() {
 		$client = new Client();
-		return view('clients.create', ['client' => $client]);
+		$cities = (new Content())->getCities();
+		$types  = (new Content())->getTypes();
+
+		return view('clients.create', [
+			'client' => $client,
+			'cities' => $cities,
+			'types'	 => $types
+		]);
 	}
 
 	public function edit($id) {
 		$client = Client::find($id);
-		return view('clients.update', ['client' => $client]);
+		$cities = (new Content())->getCities();
+		$types  = (new Content())->getTypes();
+
+		return view('clients.update', [
+			'client' => $client,
+			'cities' => $cities,
+			'types'	 => $types
+		]);
 	}
 
 	public function create(Request $request) {
@@ -48,19 +64,12 @@ class ClientsController extends Controller
 
 	protected function _store(Request $request, $client) {
 		$this->_validate($request, $client->id);
-		$googleResults = $this->_getCoordinates($request);
 
-		if ($googleResults === false) {
-			throw new Exception("No results for this city");
-		}
-
-		$client->name	= $request->name;
-		$client->type	= $request->type;
-		$client->phone	= $request->phone;
-		$client->from	= $request->from;
-		$client->city	= $request->city;
-		$client->lat	= $googleResults->lat;
-		$client->lng	= $googleResults->lng;
+		$content = (new Content())->findByCityAndType($request->city, $request->type);
+		$client->content_id	= $content->id;
+		$client->name		= $request->name;
+		$client->phone		= $request->phone;
+		$client->from		= $request->from;
 
 		$client->save();
 	}

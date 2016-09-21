@@ -56,8 +56,8 @@ class Foreca {
 	}
 
 	/**
-	 * Parsing query
-	 *
+     * Parsing query
+     *
 	 * @access protected
 	 * @param  String $query (url)
 	 * @return Array
@@ -65,9 +65,10 @@ class Foreca {
 	 * @author Kukua B.V. <dev@kukua.cc>
 	 * @since  21-06-2016
 	 */
-	protected function _parse($query) {
-		$response = simplexml_load_file($query);
-		if (!$response) {
+    protected function _parse($query) {
+        libxml_use_internal_errors();
+        $response = simplexml_load_file($query);
+        if (!$response) {
 			return;
 		}
 

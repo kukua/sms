@@ -27,10 +27,10 @@
 							<tr>
 								<td>{{ $client->id }}</td>
 								<td>{{ $client->name }}</td>
-								<td>{{ $client->city }}</td>
+								<td>{{ $client->content->city }}</td>
 								<td>{{ $client->phone }}</td>
 								<td>{{ $client->from }}</td>
-								<td>{{ $client->type }}</td>
+								<td>{{ $client->content->type }}</td>
 								<td>
 									<div class="pull-right">
 										<a href="/clients/edit/{{ $client->id }}/"><i class="fa fa-btn fa-edit"></i></a>

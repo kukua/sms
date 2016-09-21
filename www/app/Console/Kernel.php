@@ -2,9 +2,11 @@
 
 namespace App\Console;
 
-use App\Library\Twilio;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+
+use App\Library\Twilio;
+use App\Library\ContentGenerator;
 
 class Kernel extends ConsoleKernel {
 
@@ -15,6 +17,11 @@ class Kernel extends ConsoleKernel {
 		//Every 15 minutes
 		$schedule->call(function() {
 			(new Twilio())->smsService();
-		})->cron('*/15 * * * *');
+        })->cron('*/15 * * * *');
+
+        $schedule->call(function() {
+            (new ContentGenerator())->index();
+        })->cron(0 3 * * *);
     }
 }
+

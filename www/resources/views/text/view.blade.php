@@ -16,26 +16,28 @@
 				</form>
 			</div>
 		</div>
-	</div>
+    </div>
+
 	<div style="margin: 20px 0"></div>
-	<div class="container">
+    <div class="container">
 		<div class="row">
-			<div class="col-md-5 col-md-offset-1">
-				<div class="panel panel-default">
-					<div class="panel-heading">Text message 1</div>
-					<div class="panel-body">
-						<?= nl2br($one) ?>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-5">
-				<div class="panel panel-default">
-					<div class="panel-heading">Text message 2</div>
-					<div class="panel-body">
-						<?= nl2br($two); ?>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+            @foreach ($content as $i => $preview)
+                @if ($i%2 == 0)
+                        </div>
+                    </div>
+	                <div style="margin: 20px 0"></div>
+                    <div class="container">
+	        	        <div class="row">
+                @endif
+	        	<div class="col-md-5 col-md-offset-1">
+	        		<div class="panel panel-default">
+	        			<div class="panel-heading">Text message {{ $i+1 }}</div>
+	        			<div class="panel-body">
+	        				<?= nl2br($preview) ?>
+	        			</div>
+	        		</div>
+                </div>
+            @endforeach
+        </div>
+    </div>
 @endsection

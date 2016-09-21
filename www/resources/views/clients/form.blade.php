@@ -8,7 +8,15 @@
 <div class="form-group">
 	<label for="city" class="control-label col-sm-4">City *</label>
 	<div class="col-sm-8">
-		<input type="text" id="city" class="form-control" name="city" value="{{ $client->city }}">
+		<select class="form-control" id="city" name="city">
+			@foreach ($cities as $city)
+				<?php $selected = "" ?>
+				@if ($client->content && $city->city == $client->content->city)
+					<?php $selected = "selected='selected'" ?>
+				@endif
+				<option value="{{ $city->city }}" {{ $selected }}>{{ $city->city }}</option>
+			@endforeach
+		</select>
 	</div>
 </div>
 
@@ -28,21 +36,17 @@
 
 <div class="form-group">
 	<div class="col-sm-8 col-sm-offset-4">
-		<div class="radio">
-			<label>
-				<input type="radio" name="type" value="1" checked> SMS Type 1
-			</label>
-		</div>
-		<div class="radio">
-			<label>
-				<input type="radio" name="type" value="2"> SMS Type 2
-			</label>
-		</div>
-		<div class="radio">
-			<label>
-				<input type="radio" name="type" value="3"> SMS Type 3
-			</label>
-		</div>
+		@foreach ($types as $type)
+			<?php $checked = "" ?>
+			@if ($client->content && $type->type == $client->content->type)
+				<?php $checked = "checked='checked'" ?>
+			@endif
+			<div class="radio">
+				<label>
+					<input type="radio" name="type" value="{{ $type->type }}" {{ $checked }}> SMS Type {{ $type->type }}
+				</label>
+			</div>
+		@endforeach
 	</div>
 </div>
 
